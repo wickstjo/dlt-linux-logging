@@ -1,0 +1,63 @@
+#messages {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 95;
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    max-width: 40vh;
+    overflow: hidden;
+    pointer-events: none;
+
+    #message {
+        display: flex;
+        color: white;
+        text-transform: uppercase;
+        text-shadow: 1px 1px #242424;
+        margin-bottom: 5px;
+        margin-right: 10px;
+        transition: 0.2s;
+        width: fit-content;
+        background: rgb(31, 31, 31);
+        border: 1px solid rgb(31, 31, 31);
+        opacity: 0;
+        transform: translate(100%, 0%);
+
+        #text {
+            padding: 8px 12px;
+        }
+
+        #icon {
+            width: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #icon.good {
+            background: rgba(37, 138, 54, 0.904);
+        }
+
+        #icon.medium {
+            background-color: rgba(172, 182, 41, 0.89);
+        }
+
+        #icon.bad {
+            background: rgba(187, 49, 49, 0.938);
+        }
+    }
+
+    #message.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(0%, 0%)
+    }
+
+    #message.inactive {
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(100%, 0%)
+    }
+}

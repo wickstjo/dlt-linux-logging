@@ -1,0 +1,93 @@
+#whisper {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid rgba(255, 255, 255, 0.185);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.185);
+
+    #message, #headers { 
+        color: #CECECE;
+        display: flex;
+        border-top: 1px solid rgba(255, 255, 255, 0.185);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+        transition: 0.2s;
+
+        div {
+            padding: 8px 10px;
+        }
+
+        #timestamp {
+            width: 120px;
+            text-align: center;
+        }
+
+        #name {
+            width: 120px;
+            border-left: 1px solid rgba(0, 0, 0, 0.171);
+            text-align: center;
+        }
+
+        #code {
+            width: 70px;
+            border-left: 1px solid rgba(0, 0, 0, 0.171);
+            text-align: center;
+        }
+
+        #msg {
+            flex: 1;
+            border-left: 1px solid rgba(0, 0, 0, 0.171);
+        }
+
+        a:link, a:visited {
+            color: white;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+
+    #headers {
+        background: rgba(0, 0, 0, 0.158);
+        color: white;
+        text-transform: uppercase;
+    }
+
+    #message:nth-child(odd) {
+        background: rgba(255, 255, 255, 0.068);
+    }
+    
+    #message:nth-child(even) {
+        background: rgba(124, 213, 255, 0.11);
+    }
+    
+    #message:hover {
+        background: rgba(110, 255, 110, 0.144);
+        color: white;
+        cursor: pointer;
+    }
+
+    #message:first-child,
+    #action:first-child,
+    #error:first-child,
+    #request:first-child {
+        border-top: 0px solid black;
+    }
+
+    #action, #error {
+        background: rgba(97, 255, 150, 0.192);
+        color: white;
+    }
+
+    #action {
+        border-top: 0px solid black;
+    }
+
+    #error {
+        background: rgba(245, 111, 111, 0.349);
+    }
+
+    #request {
+        background: rgba(236, 245, 111, 0.178);
+        color: #F1F1F1;
+    }
+}
