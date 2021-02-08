@@ -3,8 +3,8 @@ import { Context } from '../assets/context';
 import { read, event } from '../funcs/blockchain';
 import reducer from '../states/local';
 
-import Info from '../components/shared/info';
-import List from '../components/shared/list';
+import Info from '../components/info';
+import List from '../components/list';
 
 export default () => {
 

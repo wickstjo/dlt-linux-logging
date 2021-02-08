@@ -3,118 +3,92 @@
         {
             "timestamp": 1612477287,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "Started Application launched by gsd-media-keys."
         },
         {
             "timestamp": 1612477287,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "Started VTE child process 276982 launched by gnome-terminal-server process 276105."
         },
         {
             "timestamp": 1612477287,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "gnome-launched-x-terminal-emulator-276972.scope:  Succeeded."
         },
         {
             "timestamp": 1612477299,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "Started Application launched by gsd-media-keys."
         },
         {
             "timestamp": 1612477299,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "Started VTE child process 277031 launched by gnome-terminal-server process 276105."
         },
         {
             "timestamp": 1612477299,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "gnome-launched-x-terminal-emulator-277023.scope:  Succeeded."
         },
         {
             "timestamp": 1612477300,
             "platform": "desktop",
-            "module": {
-                "name": "zeitgeist-datah",
-                "code": 3414
-            },
+            "module": "zeitgeist-datah",
+            "code": 3414,
             "msg": "downloads-directory-provider.vala: 120:  Couldn't process /home/wickstjo/.bash_history-76982.tmp:  Error when getting information for file “/home/wickstjo/.bash_history-76982.tmp”:  No such file or directory"
         },
         {
             "timestamp": 1612477300,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "vte-spawn-55d98466-e092-4f7d-87f5-dd21b472bb4a.scope:  Succeeded."
         },
         {
             "timestamp": 1612477300,
             "platform": "desktop",
-            "module": {
-                "name": "dbus-daemon",
-                "code": 999
-            },
+            "module": "dbus-daemon",
+            "code": 999,
             "msg": "[session uid=1000 pid=999] Activating via systemd:  service name=\\'org.freedesktop.Tracker1\\' unit=\\'tracker-store.service\\' requested by \\': 1.2\\' (uid=1000 pid=984 comm=\"/usr/libexec/tracker-miner-fs \" label=\"unconfined\")"
         },
         {
             "timestamp": 1612477300,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "Starting Tracker metadata database store and lookup manager..."
         },
         {
             "timestamp": 1612477300,
             "platform": "desktop",
-            "module": {
-                "name": "dbus-daemon",
-                "code": 999
-            },
+            "module": "dbus-daemon",
+            "code": 999,
             "msg": "[session uid=1000 pid=999] Successfully activated service 'org.freedesktop.Tracker1'"
         },
         {
             "timestamp": 1612477300,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "Started Tracker metadata database store and lookup manager."
         },
         {
             "timestamp": 1612477300,
             "platform": "desktop",
-            "module": {
-                "name": "systemd",
-                "code": 968
-            },
+            "module": "systemd",
+            "code": 968,
             "msg": "vte-spawn-70618324-5e0b-433b-8bc1-0413c03acb14.scope:  Succeeded."
         }
     ]

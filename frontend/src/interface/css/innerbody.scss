@@ -14,6 +14,17 @@
         border-top: 1px solid rgba(0, 0, 0, 0.171);
         border-bottom: 1px solid rgba(255, 255, 255, 0.185);
 
+        input {
+            background: rgba(255, 255, 255, 0.068);
+            padding: 8px 10px;
+            color: #CECECE;
+            border: 0px solid black;
+            border-top: 1px solid rgba(255, 255, 255, 0.185);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+            outline: none;
+            width: 100%;
+        }
+
         #row, #topic, #fallback {
             background: rgba(255, 255, 255, 0.068);
             padding: 8px 10px;

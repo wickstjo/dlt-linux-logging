@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { filter_zeros } from '../../funcs/format';
+import { filter_zeros } from '../funcs/format';
 
 export default ({ data, header, fallback, category, trigger }) => {
 
