@@ -17,17 +17,11 @@ const values = {
         type: null
     },
 
-    // TOAST MESSAGES
-    messages: [],
-
-    // REDIRECT PARAMS
-    redirect: {
-        status: false,
-        location: ''
-    },
-
     // INIT STATUS
     initialized: false,
+
+    // TOAST MESSAGES
+    messages: [],
 
     // BLOCKCHAIN PARAMS
     web3: null,
@@ -37,28 +31,8 @@ const values = {
         private: ''
     },
 
-    // WHISPER PARAMS
-    shh: null,
-    whisper: {
-        topic: null,
-        symkey: null,
-        id: null,
-        feed: null,
-        messages: []
-    },
-
     // HEX UTILITIES
-    utils: {},
-
-    // VERIFY USER REGISTRATION
-    verified: false,
-
-    // DEVICE SERVICE QUERY
-    query: {
-        active: false,
-        id: '',
-        results: []
-    }
+    utils: {}
 }
 
 // STATE REDUCER
@@ -114,88 +88,11 @@ function reducer(state, { type, payload, params }) {
             ]
         }}
 
-        // REDIRECT TO PAGE
-        case 'redirect': { return {
-            ...state,
-            redirect: {
-                status: true,
-                location: payload
-            }
-        }}
-
-        // RESET REDIRECT LOGIC
-        case 'reset-redirect': { return {
-            ...state,
-            redirect: {
-                status: false,
-                location: ''
-            }
-        }}
-
         // INITIALIZE APIS & DATA
         case 'init': { return {
             ...state,
             ...payload,
             initialized: true
-        }}
-
-        // VERIFY USER REGISTRATION
-        case 'verify': { return {
-            ...state,
-            verified: payload
-        }}
-
-        // SET WHISPER FEED
-        case 'feed': { return {
-            ...state,
-            whisper: {
-                ...state.whisper,
-                feed: payload
-            }
-        }}
-
-        // ADD WHISPER MESSAGE
-        case 'whisper-message': { return {
-            ...state,
-            whisper: {
-                ...state.whisper,
-                messages: [
-                    ...state.whisper.messages,
-                    payload
-                ]
-            }
-        }}
-
-        // SET DEVICE SERVICE QUERY
-        case 'set-query': { return {
-            ...state,
-            query: {
-                active: true,
-                id: payload,
-                results: []
-            }
-        }}
-
-        // ADD QUERY RESPONSE
-        case 'query-response': { return {
-            ...state,
-            query: {
-                ...state.query,
-                results: [
-                    ...state.query.results,
-                    payload
-                ]
-            }
-        }}
-
-        // RESET QUERY
-        case 'reset-query': { return {
-            ...state,
-            query: {
-                active: false,
-                id: '',
-                results: []
-            }
         }}
 
         // FALLBACK

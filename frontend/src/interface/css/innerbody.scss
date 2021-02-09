@@ -17,12 +17,16 @@
         input {
             background: rgba(255, 255, 255, 0.068);
             padding: 8px 10px;
-            color: #CECECE;
+            color: #F1F1F1;
             border: 0px solid black;
             border-top: 1px solid rgba(255, 255, 255, 0.185);
             border-bottom: 1px solid rgba(0, 0, 0, 0.171);
             outline: none;
             width: 100%;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.568);
         }
 
         #row, #topic, #fallback {

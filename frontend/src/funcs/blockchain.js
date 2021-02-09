@@ -1,19 +1,12 @@
 import Web3 from 'web3';
-import { gateway, keys, whisper } from '../resources/settings.json';
+import { gateway, keys } from '../resources/settings.json';
 import references from '../resources/latest.json';
 
 // PARSE SC & WEB3
-async function init(state) {
+async function init() {
 
     // ESTABLISH WEB3 CONNECTION
     const web3 = new Web3('ws://' + gateway.host + ':' + gateway.port);
-
-    // GENERATE FRESH WHISPER ID
-    const identification = await web3.shh.newKeyPair();
-
-    // GENERATE NEW WHISPER TOPIC SYMKEY
-    // const foo = await web3.shh.newSymKey()
-    // console.log(foo)
 
     // RETURN WITH REFERENCES
     return {
@@ -21,25 +14,13 @@ async function init(state) {
         shh: web3.shh,
         contracts: {
             managers: managers([
-                'user',
-                'oracle',
-                'task',
-                'token',
-                'service'
+                'device',
             ], web3),
             interfaces: interfaces([
-                'user',
-                'oracle',
-                'task',
-                'service'
+                'device',
             ])
         },
         keys: keys,
-        whisper: {
-            ...state.whisper,
-            ...whisper,
-            id: identification
-        },
         utils: {
             to_string: web3.utils.hexToString,
             to_hex: web3.utils.stringToHex

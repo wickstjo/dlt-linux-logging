@@ -26,9 +26,9 @@ export default () => {
                 payload: {
 
                     // LIST OF DEVICES
-                    initialized: await read({
-                        contract: 'task',
-                        func: 'initialized'
+                    devices: await read({
+                        contract: 'device',
+                        func: 'fetch_devices'
                     }, state),
                 }
             })
@@ -39,8 +39,8 @@ export default () => {
           
         // SUBSCRIBE TO EVENTS IN THE CONTRACT
         const feed = event({
-            contract: 'task',
-            name: 'modification'
+            contract: 'device',
+            name: 'added'
         }, state)
 
         // WHEN EVENT DATA IS INTERCEPTED
@@ -61,7 +61,7 @@ export default () => {
             <Info
                 header={ 'device manager' }
                 data={{
-                    'Contract Address': state.contracts.managers.task._address,
+                    'Contract Address': state.contracts.managers.device._address,
                 }}
             />
             <List

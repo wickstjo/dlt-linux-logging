@@ -2,8 +2,8 @@ import React, { useContext, useReducer, Fragment, useEffect } from 'react';
 import { Context } from '../assets/context';
 import reducer from '../states/local';
 
-//import { read } from '../funcs/blockchain';
-import mock from '../resources/mock.json';
+import { read, event } from '../funcs/blockchain';
+import { decode } from '../funcs/process';
 
 import Filter from '../components/filter';
 import Chat from '../components/chat';
@@ -24,20 +24,69 @@ export default ({ match }) => {
     useEffect(() => {
         const run = async() => {
 
+            // FETCH THE ADDRESS WITH THE MATCHING HASH
+            const address = await read({
+                contract: 'device',
+                func: 'fetch_device',
+                args: [match.params.address]
+            }, state)
+
+            // FETCH THE LOG DATA
+            const data = await read({
+                contract: 'device',
+                address: address,
+                func: 'fetch'
+            }, state)
+
+            // PARSED CONTAINER
+            const container = []
+
+            // LOOP THROUGH & DECODE
+            data.forEach(block => {
+                const decoded = decode(block)
+                container.push(decoded)
+            })
+
+            // REVERSE THE CONTAINER
+            container.reverse()
+
             // FETCH DATA & SET IN STATE
             set_local({
                 type: 'all',
                 payload: {
 
                     // LOG ROWS
-                    original: mock.data,
-                    filtered: mock.data
+                    original: container,
+                    filtered: container
                 }
             })
+
+            return address
         }
 
+        // TEMPORARY FEED
+        let feed = null;
+
         // RUN THE ABOVE
-        run()
+        run().then(address => {
+
+            // SUBSCRIBE TO EVENTS IN THE CONTRACT
+            feed = event({
+                contract: 'device',
+                address: address,
+                name: 'added'
+            }, state)
+
+            // WHEN EVENT DATA IS INTERCEPTED
+            feed.on('data', async() => {
+
+                // FETCH THE ROWS AGAIN
+                run()
+            })
+        })
+
+        // UNSUBSCRIBE ON UNMOUNT
+        return () => { feed.unsubscribe(); }
 
     // eslint-disable-next-line
     }, [])

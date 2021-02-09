@@ -18,19 +18,23 @@ export default ({ header, data }) => {
                 <div id={ 'header' }>{ header } ({ data.length })</div>
                 <div id={ 'whisper' }>
                     <div id={ 'headers' }>
-                            <div id={ 'timestamp' }>Timestamp</div>
-                            <div id={ 'module' }>Module</div>
-                            <div id={ 'code' }>Code</div>
-                            <div id={ 'msg' }>Message</div>
+                        <div id={ 'timestamp' }>Timestamp</div>
+                        <div id={ 'module' }>Module</div>
+                        <div id={ 'code' }>Code</div>
+                        <div id={ 'msg' }>Message</div>
+                    </div>
+                    <div id={ 'overflow' }>
+                        <div id={ 'foobarz' }>
+                            { data.map((data, index) =>
+                                <div id={ 'message' } key={ index }>
+                                    <div id={ 'timestamp' }>{ data.timestamp }</div>
+                                    <div id={ 'module' }>{ data.module }</div>
+                                    <div id={ 'code' }>{ data.code }</div>
+                                    <div id={ 'msg' }>{ data.msg.length > 75 ? data.msg.substring(0, 72) + '...' : data.msg }</div>
+                                </div>
+                            )}
                         </div>
-                    { data.map((data, index) =>
-                        <div id={ 'message' } key={ index }>
-                            <div id={ 'timestamp' }>{ data.timestamp }</div>
-                            <div id={ 'module' }>{ data.module }</div>
-                            <div id={ 'code' }>{ data.code }</div>
-                            <div id={ 'msg' }>{ data.msg.length > 75 ? data.msg.substring(0, 72) + '...' : data.msg }</div>
-                        </div>
-                    )}
+                    </div>
                 </div>
             </Fragment>
         )}
