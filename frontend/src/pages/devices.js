@@ -5,11 +5,12 @@ import reducer from '../states/local';
 
 import Info from '../components/info';
 import List from '../components/list';
+import Actions from '../components/actions';
 
 export default () => {
 
     // GLOBAL STATE
-    const { state } = useContext(Context)
+    const { state, dispatch } = useContext(Context)
 
     // LOCAL STATES
     const [local, set_local] = useReducer(reducer, {
@@ -69,6 +70,16 @@ export default () => {
                 fallback={ 'No devices found.' }
                 data={ local.devices }
                 category={ '/devices' }
+            />
+            <Actions
+                options={{
+                    'register device': () => {
+                        dispatch({
+                            type: 'show-prompt',
+                            payload: 'import-device'
+                        })
+                    }
+                }}
             />
         </Fragment>
     )

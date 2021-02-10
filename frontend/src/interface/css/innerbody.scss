@@ -1,6 +1,8 @@
 #innerbody {
     flex: 1;
     border-top: 2px solid #ffffff21;
+    display: flex;
+    flex-direction: column;
 
     > #header {
         color: white;

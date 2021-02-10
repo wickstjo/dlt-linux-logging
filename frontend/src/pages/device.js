@@ -11,7 +11,7 @@ import Chat from '../components/chat';
 export default ({ match }) => {
 
     // GLOBAL STATE
-    const { state } = useContext(Context)
+    const { state, dispatch } = useContext(Context)
 
     // LOCAL STATE
     const [local, set_local] = useReducer(reducer, {
@@ -50,14 +50,11 @@ export default ({ match }) => {
             // REVERSE THE CONTAINER
             container.reverse()
 
-            // FETCH DATA & SET IN STATE
+            // SET IN STATE
             set_local({
                 type: 'all',
                 payload: {
-
-                    // LOG ROWS
-                    original: container,
-                    filtered: container
+                    original: container
                 }
             })
 
@@ -82,6 +79,15 @@ export default ({ match }) => {
 
                 // FETCH THE ROWS AGAIN
                 run()
+
+                // CREATE TOAST MESSAGE
+                dispatch({
+                    type: 'toast-message',
+                    payload: {
+                        type: 'good',
+                        msg: 'received new data'
+                    }
+                })
             })
         })
 
@@ -90,6 +96,13 @@ export default ({ match }) => {
 
     // eslint-disable-next-line
     }, [])
+
+    // WHEN THE DATA CHANGES, FILTER IF NECESSARY
+    useEffect(() => {
+        filter()
+
+    // eslint-disable-next-line
+    }, [local.original])
 
     // UPDATE INPUT STATE
     function update(value) {
@@ -102,47 +115,47 @@ export default ({ match }) => {
         })
     }
 
+    // FILTER SHOWN DATA
+    function filter() {
+
+        // IF SOME   INPUT WAS GIVEN
+        if (local.input !== '') {
+
+            // FIND THE SPLITTING INDEX
+            const index = local.input.indexOf('=')
+
+            // EXTRACT THE HEADER & QUERY
+            const header = local.input.substring(0, index)
+            let query = local.input.substring(index + 1, local.input.length)
+
+            // FILTER ROWS
+            const filtered_data = local.original.filter(row => row[header] === query)
+
+            // SET IN STATE
+            set_local({
+                type: 'specific',
+                payload: {
+                    name: 'filtered',
+                    data: filtered_data
+                }
+            })
+
+        // OTHERWISE, RESET FILTER
+        } else {
+            set_local({
+                type: 'specific',
+                payload: {
+                    name: 'filtered',
+                    data: local.original
+                }
+            })
+        }
+    }
+
     // ON KEY EVENT..
     useEffect(() => {
         if (state.key_event !== null && state.key_event.keyCode === 13) {
-
-            // IF AN INPUT WAS GIVEN
-            if (local.input !== '') {
-
-                // FIND THE SPLITTING INDEX
-                const index = local.input.indexOf('=')
-
-                // EXTRACT THE HEADER & QUERY
-                const header = local.input.substring(0, index)
-                let query = local.input.substring(index + 1, local.input.length)
-
-                // IF QUERY IS A NUMBER, PARSE IT
-                if (!isNaN(query)) {
-                    query = Number(query)
-                }
-
-                // FILTER ROWS
-                const foo = local.original.filter(row => row[header] === query)
-
-                // SET IN STATE
-                set_local({
-                    type: 'specific',
-                    payload: {
-                        name: 'filtered',
-                        data: foo
-                    }
-                })
-
-            // OTHERWISE, RESET FILTER
-            } else {
-                set_local({
-                    type: 'specific',
-                    payload: {
-                        name: 'filtered',
-                        data: local.original
-                    }
-                })
-            }
+            filter()
         }
 
     // eslint-disable-next-line

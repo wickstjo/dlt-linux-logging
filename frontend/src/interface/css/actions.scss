@@ -1,0 +1,52 @@
+#actions {
+    display: flex;
+    padding: 10px;
+    justify-content: flex-end;
+
+    #action {
+        border: 1px solid rgba(255, 255, 255, 0.205);
+        background-color: rgba(128, 255, 111, 0.164);
+        display: inline-block;
+        padding-top: 8px;
+        padding-bottom: 10px;
+        padding-right: 12px;
+        padding-left: 35px;
+        color: #CECECE;
+        text-shadow: 1px 1px #242424;
+        background-image: url('../icons/plus.png');
+        background-repeat: no-repeat;
+        background-position-y: center;
+        background-position-x: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+        text-align: center;
+        margin-left: 5px;
+        text-transform: capitalize;
+    }
+
+    #action:hover {
+        background-color: rgba(128, 255, 111, 0.295);
+        color: white;
+        transform: translate(0px, 5px)
+    }
+
+    #action.modify {
+        background-image: url('../icons/wrench.png');
+    }
+
+    #action.update {
+        background-image: url('../icons/warning.png');
+    }
+
+    #action.purchase {
+        background-image: url('../icons/money.png');
+    }
+
+    #action.inspect, #action.discover {
+        background-image: url('../icons/search.png');
+    }
+
+    #action.retire {
+        background-image: url('../icons/bin.png');
+    }
+}

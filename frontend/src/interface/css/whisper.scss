@@ -2,19 +2,32 @@
     display: flex;
     flex-direction: column;
     border-top: 1px solid rgba(255, 255, 255, 0.185);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.185);
+    flex: 1;
 
     #overflow {
+        position: relative;
+        overflow: auto;
+        height: 100%;
         
-        #foobarz {
+        #foobz {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            height: 100%;
+            width: 100%;
         }
     }
+
+    #overflow::-webkit-scrollbar { width: 12px; }
+    #overflow::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.226); }
+    #overflow::-webkit-scrollbar-thumb { background: rgba(221, 224, 69, 0.616); }
 
     #message, #headers {
         color: #CECECE;
         display: flex;
         border-top: 1px solid rgba(255, 255, 255, 0.185);
         border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+        border-right: 1px solid rgba(0, 0, 0, 0.171);
         transition: 0.2s;
 
         div {
@@ -56,6 +69,12 @@
         background: rgba(0, 0, 0, 0.158);
         color: white;
         text-transform: uppercase;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.185);
+        border-top: 0px solid black;
+
+        div {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+        }
     }
 
     #message:nth-child(odd) {
@@ -74,5 +93,13 @@
 
     #message:first-child {
         border-top: 0px solid black;
+    }
+
+    #message:last-child {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.185);
+
+        div {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+        }
     }
 }
