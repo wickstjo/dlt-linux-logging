@@ -1,0 +1,38 @@
+// ANOMALIES
+
+    // ID SEQUENCE ANOMALY
+        EVENT A => X => C
+
+    // EVENT ATTRIBUTE ANOMALY
+        WEIRD ATTRIBUTES
+
+    // PERFORMANCE ANOMALY
+        X EVENT TAKES TOO LONG/SHORT
+
+    // READ MORE
+    For example in [3] to extract event identifier log records are clustered based on string edit distance between them.
+    
+    STRING EDIT DISTANCE: https://www.google.com/search?q=string+edit+distance&oq=string+edit+distance&aqs=chrome..69i57j0l3j0i22i30l4.2264j0j7&sourceid=chrome&ie=UTF-8
+    
+    https://netman.aiops.org/~peidan/ANM2018Fall/6.LogAnomalyDetection/ReadingList/2009ICDM_Execution_Anomaly_Detection_in_Distributed_Systems.pdf
+
+// TEST
+
+    HASHMAP DATASTR
+        EVENT HASH => OCCURRENCE -- MAYBE ID?
+
+    EVENT LOOP
+        HASH EVENT WITHOUT TIMESTAMP
+        CHECK HASHMAP WHEN EVENT LAST OCCURRED
+
+            IF IT EXISTS
+                SUBTRACT CURRENT TIMESTAMP WITH LAST TIMESTAMP
+
+                IF DISTANCE IS GREATER THAN X
+                    ANOMALY?
+
+                OTHERWISE
+                    PASS
+
+            OTHERWISE
+                ANOMALY?
