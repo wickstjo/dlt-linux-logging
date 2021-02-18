@@ -15,3 +15,6 @@ package-lock.json
 
 # BLOCKCHAIN DB
 # chain
+
+# TEMP SYSLOG
+iot-syslog.gz
