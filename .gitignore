@@ -16,5 +16,5 @@ package-lock.json
 # BLOCKCHAIN DB
 # chain
 
-# TEMP SYSLOG
-iot-syslog.gz
+# IOT SYSLOG DATA
+middleware/data
