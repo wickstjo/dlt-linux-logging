@@ -459,3 +459,16 @@
 13:34:04.590440 table@remove removed @96
 13:34:04.590460 table@remove removed @93
 13:34:04.590484 table@remove removed @92
+=============== Mar 7, 2021 (EET) ===============
+15:25:54.241153 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:25:54.241877 version@stat F·[0 1] S·176B[0B 176B] Sc·[0.00 0.00]
+15:25:54.241891 db@open opening
+15:25:54.241930 journal@recovery F·1
+15:25:54.243343 journal@recovery recovering @103
+15:25:54.246315 memdb@flush created L0@106 N·1 S·159B "loc..seq,v66":"loc..seq,v66"
+15:25:54.246815 version@stat F·[1 1] S·335B[159B 176B] Sc·[0.25 0.00]
+15:25:54.256806 db@janitor F·5 G·1
+15:25:54.256836 db@janitor removing table-102
+15:25:54.256948 db@open done T·15.047649ms
+16:58:42.304340 db@close closing
+16:58:42.304397 db@close done T·53.986µs
