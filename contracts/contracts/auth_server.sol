@@ -4,14 +4,15 @@ pragma experimental ABIEncoderV2;
 
 // IMPORT INTERFACE
 import { DeviceManager } from './device_manager.sol';
+import { Device } from './device.sol';
 
 contract AuthServer {
 
-    // MAP OF CREATED KEYS
-    mapping (string => string[]) public keys;
+    // CONTRACT OWNER
+    address public owner;
 
-    // REQUEST BACKLOG
-    string[] public backlog;
+    // KEY ORDER BACKLOG
+    Device[] public orders;
 
     // DEVICE MANAGER REFERENCE
     DeviceManager public device_manager;
@@ -19,14 +20,11 @@ contract AuthServer {
     // INIT STATUS
     bool public initialized = false;
 
-    // GENERATE NEW KEY EVENT
-    event generate_event(string);
+    // CONTRACT MODIFICATIO NEVENT
+    event modification();
 
     // REQUEST AUTH KEY
-    function request_key(
-        string memory device,
-        string memory encryption_key
-    ) public {
+    function request_key(string memory device) public {
 
         // IF THE CONTRACT HAS BEEN INITIALIZED
         require(initialized, 'contract has not been initialized');
@@ -36,25 +34,59 @@ contract AuthServer {
         require(device_manager.exists(device), 'the device is not registered');
         require(device_manager.fetch_device(device).owner() == msg.sender, 'you are not the device owner');
 
-        // PUSH TO BACKLOG
-        backlog.push(encryption_key);
+        // PUSH ORDER
+        orders.push(
+            device_manager.fetch_device(device)
+        );
 
-        // EMIT ASYNC EVENT
-        generate_event(encryption_key);
+        // EMIT EVENT
+        modification();
     }
 
-    // FETCH A SPECIFIC KEY
-    function fetch_key(string memory encryption_key) public view returns(string[] memory) {
-        return keys[encryption_key];
+    // ASSIGN ENCRYPTION KEY TO DEVICE
+    function assign_key(string memory key, address device) public {
+
+        // IF THE CONTRACT HAS BEEN INITIALIZED
+        // IF THE SENDER IS THE OWNER
+        require(initialized, 'contract has not been initialized');
+        require(msg.sender == owner, 'you are not the contracts owner');
+
+        // ASSIGN THE ENCRYPTION KEY
+        Device(device).assign_key(key);
+
+        // CLEAR THE ORDER
+        clear_order(device);
+
+        // EMIT EVENT
+        modification();
+    }
+
+    // CLEAR FINISHED ORDER
+    function clear_order(address device) private {
+
+        // LOOP & ATTEMPT TO FIND THE DEVICE
+        for(uint index = 0; index < orders.length; index++) {
+
+            // IF ITS FOUND
+            if (orders[index] == Device(device)) {
+
+                // DELETE TARGET
+                delete orders[index];
+
+                // EMIT EVENT
+                emit modification();
+            }
+        }
     }
 
     // INITIALIZE CONTRACT
-    function init(address _device_manager) public {
+    function init(address _device_manager, address _owner) public {
 
         // IF THE CONTRACT HAS NOT BEEN INITIALIZED BEFORE
         require(!initialized, 'contract has already been initialized');
 
         // SET REFERENCE
         device_manager = DeviceManager(_device_manager);
+        owner = _owner;
     }
 }
