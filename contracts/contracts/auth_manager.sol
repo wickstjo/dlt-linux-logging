@@ -6,7 +6,7 @@ pragma experimental ABIEncoderV2;
 import { DeviceManager } from './device_manager.sol';
 import { Device } from './device.sol';
 
-contract AuthServer {
+contract AuthManager {
 
     // CONTRACT OWNER
     address public owner;
@@ -52,7 +52,7 @@ contract AuthServer {
         require(msg.sender == owner, 'you are not the contracts owner');
 
         // ASSIGN THE ENCRYPTION KEY
-        Device(device).assign_key(key);
+        Device(device).set_encryption_key(key);
 
         // CLEAR THE ORDER
         clear_order(device);
@@ -88,5 +88,6 @@ contract AuthServer {
         // SET REFERENCE
         device_manager = DeviceManager(_device_manager);
         owner = _owner;
+        initialized = true;
     }
 }

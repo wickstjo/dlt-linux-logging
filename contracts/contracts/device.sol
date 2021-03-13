@@ -4,9 +4,12 @@ pragma experimental ABIEncoderV2;
 
 contract Device {
 
-    // DEVICE OWNER & IDENTIFIER
+    // STATIC PARAMS
     address public owner;
     string public identifier;
+
+    // AUTH MANAGER REF
+    address public auth_manager;
 
     // MARGIN OF ERROR EXPRESSED AS A BASIS POINT -- 185 == 1.85%
     uint public error_margin;
@@ -19,6 +22,12 @@ contract Device {
 
     // ANOMALY REPORTS
     report[] public reports;
+
+    // ASSIGNED PUBLIC ENCRYPTION KEY
+    string public encryption_key;
+
+    // ENCRYPTED LOG ARCHIVE
+    log_archive[] public logs;
 
     // EVENT HISTORY OBJECT
     struct history {
@@ -42,77 +51,115 @@ contract Device {
         uint average;
     }
 
+    // LOG ARCHIVE 
+    struct log_archive {
+        string data;
+        string encryption_key;
+    }
+
     // ANOMALOUS EVENT
     event anomaly(report);
 
-    // WHEN CREATED..
+    // WHEN CREATED...
     constructor(
         address _owner,
         string memory _identifier,
-        uint _error_margin,
-        uint _distance_quota
+        address _auth_manager
     ) {
-    
+
         // SET STATIC PARAMS
         owner = _owner;
         identifier = _identifier;
-
-        // SET DISTANCE PARAMS
-        error_margin = _error_margin;
-        distance_quota = _distance_quota;
+        auth_manager = _auth_manager;
     }
 
-    // EVALUATE EVENTS
-    function evaluate(event_data[] memory data) public {
+    // SET DISTANCE QUOTA
+    function set_encryption_key(string memory _encryption_key) public {
+
+        // IF THE SENDER IS THE OWNER
+        require(msg.sender == auth_manager, 'permission denied');
+
+        // SET PARAM
+        encryption_key = _encryption_key;
+    }
+
+    // SET DISTANCE QUOTA
+    function set_distance_quota(uint _distance_quota) public {
 
         // IF THE SENDER IS THE OWNER
         require(msg.sender == owner, 'permission denied');
 
-        // LOOP THROUGH & PUSH EACH LINE
-        for(uint index = 0; index < data.length; index++) {
+        // SET PARAM
+        distance_quota = _distance_quota;
+    }
+
+    // SET ERROR MARGIN
+    function set_error_margin(uint _error_margin) public {
+
+        // IF THE SENDER IS THE OWNER
+        require(msg.sender == owner, 'permission denied');
+
+        // SET PARAM
+        error_margin = _error_margin;
+    }
+
+    // EVALUATE EVENTS
+    function evaluate(
+        log_archive memory log_data,
+        event_data[] memory hashed_data
+    ) public {
+
+        // IF THE SENDER IS THE OWNER
+        require(msg.sender == owner, 'permission denied');
+
+        // ARCHIVE LOG DATA
+        logs.push(log_data);
+
+        // LOOP THROUGH HASHED LOGS
+        for(uint index = 0; index < hashed_data.length; index++) {
 
             // IF THE EVENT HAS OCCURRED BEFORE
-            if (events[data[index].hash_id].exists) {
+            if (events[hashed_data[index].hash_id].exists) {
 
                 // CALCULATE DISTANCE FROM PREVIOUS OCCURRENCE
-                uint distance = data[index].timestamp - events[data[index].hash_id].last_occurrence;
+                uint distance = hashed_data[index].timestamp - events[hashed_data[index].hash_id].last_occurrence;
 
                 // CALCULATE ERROR MARGIN FOR DISTANCE
                 uint margin = distance * error_margin / 10000;
 
                 // IF THE DISTANCE MATRIX ISNT EMPTY
-                if (events[data[index].hash_id].distances.length > 0) {
+                if (events[hashed_data[index].hash_id].distances.length > 0) {
 
                     // CALCULATE AVERAGE DISTANCE
-                    uint average = avg_distance(data[index].hash_id);
+                    uint average = avg_distance(hashed_data[index].hash_id);
 
                     // IF THE DISTANCE IS NOT WITHIN RANGE
                     if (distance + margin >= average && distance - margin <= average) {
 
                         // CREATE ANOMALY REPORT
-                        create_report(data[index], distance, average);
+                        create_report(hashed_data[index], distance, average);
                     }
 
                 // OTHERWISE..
                 } else {
 
                     // CREATE ANOMALY REPORT
-                    create_report(data[index], 0, 0);
+                    create_report(hashed_data[index], 0, 0);
                 }
 
                 // UPDATE THE DISTANCE MATRIX
-                events[data[index].hash_id].distances[events[data[index].hash_id].next_index] = distance;
+                events[hashed_data[index].hash_id].distances[events[hashed_data[index].hash_id].next_index] = distance;
 
                 // UPDATE LAST OCCURRENCE
-                events[data[index].hash_id].last_occurrence = data[index].timestamp;
+                events[hashed_data[index].hash_id].last_occurrence = hashed_data[index].timestamp;
 
                 // IF THE NEXT INDEX IS LARGER THAN THE DISTANCE QUOTA, ROLL BACK TO ZERO
-                if (events[data[index].hash_id].next_index + 1 > distance_quota) {
-                    events[data[index].hash_id].next_index = 0;
+                if (events[hashed_data[index].hash_id].next_index + 1 > distance_quota) {
+                    events[hashed_data[index].hash_id].next_index = 0;
 
                 // OTHERWISE, INCREMENT INDEX NORMALLY
                 } else {
-                    events[data[index].hash_id].next_index += 1;
+                    events[hashed_data[index].hash_id].next_index += 1;
                 }
 
             // OTHERWISE..
@@ -122,15 +169,15 @@ contract Device {
                 uint[] memory foo;
                 
                 // CREATE ENTRY
-                events[data[index].hash_id] = history({
+                events[hashed_data[index].hash_id] = history({
                     distances: foo,
-                    last_occurrence: data[index].timestamp,
+                    last_occurrence: hashed_data[index].timestamp,
                     next_index: 0,
                     exists: true
                 });
 
                 // CREATE ANOMALY REPORT
-                create_report(data[index], 0, 0);
+                create_report(hashed_data[index], 0, 0);
             }
         }
     }

@@ -13,6 +13,12 @@ contract DeviceManager {
     // ITERABLE LIST OF DEVICES
     string[] public listed;
 
+    // INIT STATUS
+    bool public initialized = false;
+
+    // AUTH MANAGER REF
+    address public auth_manager;
+
     // DEVICE ADDED EVENT
     event added();
 
@@ -35,7 +41,8 @@ contract DeviceManager {
         // CREATE THE DEVICE CONTRACT
         devices[identifier] = new Device(
             msg.sender,
-            identifier
+            identifier,
+            auth_manager
         );
 
         // LIST THE DEVICE
@@ -52,5 +59,16 @@ contract DeviceManager {
         } else {
             return false;
         }
+    }
+
+    // INITIALIZE CONTRACT
+    function init(address _auth_manager) public {
+
+        // IF THE CONTRACT HAS NOT BEEN INITIALIZED BEFORE
+        require(!initialized, 'contract has already been initialized');
+
+        // SET REFERENCE
+        auth_manager = _auth_manager;
+        initialized = true;
     }
 }
