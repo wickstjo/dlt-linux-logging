@@ -44,7 +44,7 @@ contract AuthManager {
     }
 
     // ASSIGN ENCRYPTION KEY TO DEVICE
-    function assign_key(string memory key, address device) public {
+    function assign_key(address device, string memory key) public {
 
         // IF THE CONTRACT HAS BEEN INITIALIZED
         // IF THE SENDER IS THE OWNER
@@ -80,14 +80,14 @@ contract AuthManager {
     }
 
     // INITIALIZE CONTRACT
-    function init(address _device_manager, address _owner) public {
+    function init(address _device_manager) public {
 
         // IF THE CONTRACT HAS NOT BEEN INITIALIZED BEFORE
         require(!initialized, 'contract has already been initialized');
 
         // SET REFERENCE
         device_manager = DeviceManager(_device_manager);
-        owner = _owner;
+        owner = msg.sender;
         initialized = true;
     }
 }

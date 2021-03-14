@@ -4,7 +4,6 @@ import json
 # RELEVANT PATHS
 root = '/home/wickstjo/coding/linux-logging'
 middleware = root + '/middleware/resources/'
-frontend = root + '/frontend/src/resources/'
 interfaces = root + '/contracts/build/contracts/'
 
 # READ FILENAMES & REMOVE MIGRATIONS

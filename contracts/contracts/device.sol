@@ -12,10 +12,10 @@ contract Device {
     address public auth_manager;
 
     // MARGIN OF ERROR EXPRESSED AS A BASIS POINT -- 185 == 1.85%
-    uint public error_margin;
+    uint public error_margin = 1000;
 
     // AMOUNT OF DISTANCES TO AVERAGE
-    uint public distance_quota;
+    uint public distance_quota = 5;
     
     // MAP OF EVENTS
     mapping (string => history) public events;
