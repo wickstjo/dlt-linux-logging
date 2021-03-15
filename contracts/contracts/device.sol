@@ -57,8 +57,9 @@ contract Device {
         string encryption_key;
     }
 
-    // ANOMALOUS EVENT
+    // EVENTS
     event anomaly(report);
+    event new_key();
 
     // WHEN CREATED...
     constructor(
@@ -81,6 +82,9 @@ contract Device {
 
         // SET PARAM
         encryption_key = _encryption_key;
+
+        // EMIT EVENT
+        emit new_key();
     }
 
     // SET DISTANCE QUOTA

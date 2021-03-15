@@ -12,7 +12,7 @@ contract AuthManager {
     address public owner;
 
     // KEY ORDER BACKLOG
-    Device[] public orders;
+    Device[] public backlog;
 
     // DEVICE MANAGER REFERENCE
     DeviceManager public device_manager;
@@ -22,6 +22,11 @@ contract AuthManager {
 
     // CONTRACT MODIFICATIO NEVENT
     event modification();
+
+    // FETCH BACKLOG
+    function fetch_backlog() public view returns(Device[] memory) {
+        return backlog;
+    }
 
     // REQUEST AUTH KEY
     function request_key(string memory device) public {
@@ -35,7 +40,7 @@ contract AuthManager {
         require(device_manager.fetch_device(device).owner() == msg.sender, 'you are not the device owner');
 
         // PUSH ORDER
-        orders.push(
+        backlog.push(
             device_manager.fetch_device(device)
         );
 
@@ -65,13 +70,13 @@ contract AuthManager {
     function clear_order(address device) private {
 
         // LOOP & ATTEMPT TO FIND THE DEVICE
-        for(uint index = 0; index < orders.length; index++) {
+        for(uint index = 0; index < backlog.length; index++) {
 
             // IF ITS FOUND
-            if (orders[index] == Device(device)) {
+            if (backlog[index] == Device(device)) {
 
                 // DELETE TARGET
-                delete orders[index];
+                delete backlog[index];
 
                 // EMIT EVENT
                 emit modification();
