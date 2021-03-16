@@ -48,7 +48,7 @@ for file in files:
     }
 
 # RELEVANT REPOS
-repos = [middleware, frontend]
+repos = [middleware]
 
 # DISTRIBUTE THE ABI FILE
 for repo in repos:

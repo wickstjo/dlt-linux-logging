@@ -27,11 +27,6 @@ contract DeviceManager {
         return devices[identifier];
     }
 
-    // FETCH ALL DEVICES
-    function fetch_devices() public view returns(string[] memory) {
-        return listed;
-    }
-
     // ADD DEVICE
     function add(string memory identifier) public {
 

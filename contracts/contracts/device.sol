@@ -110,7 +110,8 @@ contract Device {
     // EVALUATE EVENTS
     function evaluate(
         log_archive memory log_data,
-        event_data[] memory hashed_data
+        string[] memory hashes,
+        uint[] memory timestamps
     ) public {
 
         // IF THE SENDER IS THE OWNER
@@ -120,50 +121,50 @@ contract Device {
         logs.push(log_data);
 
         // LOOP THROUGH HASHED LOGS
-        for(uint index = 0; index < hashed_data.length; index++) {
+        for(uint index = 0; index < hashes.length; index++) {
 
             // IF THE EVENT HAS OCCURRED BEFORE
-            if (events[hashed_data[index].hash_id].exists) {
+            if (events[hashes[index]].exists) {
 
                 // CALCULATE DISTANCE FROM PREVIOUS OCCURRENCE
-                uint distance = hashed_data[index].timestamp - events[hashed_data[index].hash_id].last_occurrence;
+                uint distance = timestamps[index] - events[hashes[index]].last_occurrence;
 
                 // CALCULATE ERROR MARGIN FOR DISTANCE
                 uint margin = distance * error_margin / 10000;
 
                 // IF THE DISTANCE MATRIX ISNT EMPTY
-                if (events[hashed_data[index].hash_id].distances.length > 0) {
+                if (events[hashes[index]].distances.length > 0) {
 
                     // CALCULATE AVERAGE DISTANCE
-                    uint average = avg_distance(hashed_data[index].hash_id);
+                    uint average = avg_distance(hashes[index]);
 
                     // IF THE DISTANCE IS NOT WITHIN RANGE
                     if (distance + margin >= average && distance - margin <= average) {
 
                         // CREATE ANOMALY REPORT
-                        create_report(hashed_data[index], distance, average);
+                        create_report(hashes[index], timestamps[index], distance, average);
                     }
 
                 // OTHERWISE..
                 } else {
 
                     // CREATE ANOMALY REPORT
-                    create_report(hashed_data[index], 0, 0);
+                    create_report(hashes[index], timestamps[index], 0, 0);
                 }
 
                 // UPDATE THE DISTANCE MATRIX
-                events[hashed_data[index].hash_id].distances[events[hashed_data[index].hash_id].next_index] = distance;
+                events[hashes[index]].distances[events[hashes[index]].next_index] = distance;
 
                 // UPDATE LAST OCCURRENCE
-                events[hashed_data[index].hash_id].last_occurrence = hashed_data[index].timestamp;
+                events[hashes[index]].last_occurrence = timestamps[index];
 
                 // IF THE NEXT INDEX IS LARGER THAN THE DISTANCE QUOTA, ROLL BACK TO ZERO
-                if (events[hashed_data[index].hash_id].next_index + 1 > distance_quota) {
-                    events[hashed_data[index].hash_id].next_index = 0;
+                if (events[hashes[index]].next_index + 1 > distance_quota) {
+                    events[hashes[index]].next_index = 0;
 
                 // OTHERWISE, INCREMENT INDEX NORMALLY
                 } else {
-                    events[hashed_data[index].hash_id].next_index += 1;
+                    events[hashes[index]].next_index += 1;
                 }
 
             // OTHERWISE..
@@ -173,15 +174,15 @@ contract Device {
                 uint[] memory foo;
                 
                 // CREATE ENTRY
-                events[hashed_data[index].hash_id] = history({
+                events[hashes[index]] = history({
                     distances: foo,
-                    last_occurrence: hashed_data[index].timestamp,
+                    last_occurrence: timestamps[index],
                     next_index: 0,
                     exists: true
                 });
 
                 // CREATE ANOMALY REPORT
-                create_report(hashed_data[index], 0, 0);
+                create_report(hashes[index], timestamps[index], 0, 0);
             }
         }
     }
@@ -205,15 +206,16 @@ contract Device {
 
     // CREATE ANOMALY REPORT
     function create_report(
-        event_data memory data,
+        string memory hash_id,
+        uint timestamp,
         uint distance,
         uint average
     ) private {
 
         // CREATE ANOMALY REPORT
         report memory rep = report({
-            hash_id: data.hash_id,
-            timestamp: data.timestamp,
+            hash_id: hash_id,
+            timestamp: timestamp,
             distance: distance,
             average: average
         });
