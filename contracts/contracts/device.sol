@@ -109,7 +109,6 @@ contract Device {
 
     // EVALUATE EVENTS
     function evaluate(
-        log_archive memory log_data,
         string[] memory hashes,
         uint[] memory timestamps
     ) public {
@@ -118,7 +117,8 @@ contract Device {
         require(msg.sender == owner, 'permission denied');
 
         // ARCHIVE LOG DATA
-        logs.push(log_data);
+        // log_archive memory log_data,
+        // logs.push(log_data);
 
         // LOOP THROUGH HASHED LOGS
         for(uint index = 0; index < hashes.length; index++) {
