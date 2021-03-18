@@ -28,7 +28,7 @@ contract DeviceManager {
     }
 
     // ADD DEVICE
-    function add(string memory identifier) public {
+    function create(string memory identifier) public {
 
         // IF THE DEVICE IS NOT REGISTERED
         require(!exists(identifier), 'the device is already registered');
