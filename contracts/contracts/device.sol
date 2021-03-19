@@ -9,20 +9,24 @@ contract Device {
     address public device;
     string public identifier;
 
+    // AUTH MANAGER REF
+    address public auth_manager;
+
     // ASSIGNED PUBLIC ENCRYPTION KEY
     string public encryption_key;
 
     // ENCRYPTED LOG ARCHIVE
     log_archive[] public logs;
 
-    // AUTH MANAGER REF
-    address public auth_manager;
-
     // LOG ARCHIVE 
     struct log_archive {
         string data;
         string encryption_key;
     }
+
+    // LOG ROTATION INDICIES
+    uint public max_index = 5000;
+    uint public next_index = 0;
 
     // EVENTS
     event key_assigned();
@@ -40,8 +44,20 @@ contract Device {
         // IF THE SENDER IS THE DEVICE ITSELF
         require(msg.sender == device, 'permission denied');
 
-        // ARCHIVE LOG BATCH
-        logs.push(batch);
+        // PUSH BATCH TO THE NEXT INDEX
+        logs[next_index] = batch;
+
+        // IF THE MAXIMUM INDEX IS REACHED, SET NEXT INDEX TO ZERO
+        if (next_index + 1 > max_index) {
+            next_index = 0;
+
+        // OTHERWISE, INCREMENT NORMALLY
+        } else { next_index += 1; }
+    }
+
+    // FETCH ARCHIVED LOGS
+    function fetch_logs() public view returns (log_archive[] memory) {
+        return logs;
     }
 
     // SET ENCRYPTION KEY
